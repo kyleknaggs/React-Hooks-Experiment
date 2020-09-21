@@ -1,40 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './App.css';
+import Congrats from "./Congrats";
 
-function App () {
-  const [comments, setComments] = useState(null);
-  useEffect(function () {
-    fetch('https://jsonplaceholder.typicode.com/posts')
-      .then(response => response.json())
-      // Limit the comments to the first 5 responses
-      .then(json => json.slice(0, 5))
-      // Wait 1 second before displaying the data
-      .then((json) => {
-        setTimeout(() => {
-          setComments(json);
-        }, 1000)
-      })
-  });
+function App() {
 
-  if (!comments) {
-    return (
-      <p>Loading...</p>
-    );
+  const [numberOfClicks, countClicks] = useState(0);
+
+  function handleClick () {
+    countClicks(numberOfClicks + 1);
   }
 
   return (
-    <ul>
-      {comments.map(function (comment, index) {
-        const {id, title, body} = comment;
-
-        return (
-          <li key = {index}>
-            <p>{`${id}: ${title}`}</p>
-            <p>{body}</p>
-          </li>
-        );
-      })}
-    </ul>
+    <div>
+      <button onClick={handleClick}>Click me!</button>
+      <p>Number of clicks: {numberOfClicks}</p>
+      {(numberOfClicks === 1) && <Congrats/>}
+    </div>
   );
 }
 
